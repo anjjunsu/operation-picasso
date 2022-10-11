@@ -1,10 +1,12 @@
 const WIDTH = 800;
 const HEIGHT = 800;
 
+const textInput = document.getElementById("text-input");
 const imgInput = document.getElementById("img-upload");
 const eraseBtn = document.getElementById("erase-btn");
 const eraseAllBtn = document.getElementById("erase-all-btn");
 const modeBtn = document.getElementById("mode-btn");
+const saveBtn = document.getElementById("save");
 const colorOptions = Array.from(
     document.getElementsByClassName("color-option")
 );
@@ -14,6 +16,7 @@ const canvas = document.querySelector("canvas");
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
 const ctx = canvas.getContext("2d");
+ctx.lineCap = "round";
 ctx.lineWidth = lineWidth.value;
 ctx.moveTo(0, 0);  
 
@@ -87,6 +90,26 @@ function onCanvasClick() {
     }
 }
 
+function onCanvasDoubleClick(event) {
+    const text = textInput.value;
+
+    if (text === "") return;
+
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.font = "50px serif"
+    ctx.fillText(text, event.offsetX, event.offsetY);
+    ctx.restore();
+}
+
+function onSaveClick() {
+    const url = canvas.toDataURL();
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "myArt.png";
+    a.click();
+}
+
 function stopPainting(event) {
     isPainting = false;
     ctx.beginPath();
@@ -100,6 +123,7 @@ const colors = [
     
 ];
 
+canvas.addEventListener("dblclick", onCanvasDoubleClick);
 canvas.addEventListener("mousemove", onMove);
 canvas.addEventListener("mousedown", startPainging);
 canvas.addEventListener("mouseup", stopPainting);
@@ -112,4 +136,6 @@ color.addEventListener("change", onColorChange);
 modeBtn.addEventListener("click", onModeBtnClick);
 eraseAllBtn.addEventListener("click", onEraseAllBtnClick);
 eraseBtn.addEventListener("click", onEraseBtnClick);
-img.addEventListener("change", onImgChange);
+imgInput.addEventListener("change", onImgChange);
+saveBtn.onclick = onSaveClick;
+
