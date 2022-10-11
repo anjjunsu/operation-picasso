@@ -66,10 +66,10 @@ function onMove(event) {
 function onModeBtnClick() {
     if (isFillMode) {
         isFillMode = false;
-        modeBtn.innerText = "Fill";
+        modeBtn.innerText = "🪣Fill";
     } else {
         isFillMode = true;
-        modeBtn.innerText = "Draw";
+        modeBtn.innerText = "🖌Draw";
     }
 }
 
